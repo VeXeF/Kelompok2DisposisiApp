@@ -3,6 +3,8 @@
 import 'package:DisApp/homepage.dart';
 import 'package:DisApp/login.dart';
 import 'package:DisApp/register.dart';
+import 'package:DisApp/suratmasuk2.dart';
+import 'package:DisApp/suratmasuk3.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +25,7 @@ void main() async {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginPage(),
+      home: SuratMasuk3(),
       routes: {
         '/login/': (context) => const LoginPage(),
         '/register/': (context) => const RegisterPage(),
@@ -41,77 +43,8 @@ Future<void> pop({bool? animated}) async {
   await SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop', animated);
 }
 
-class ExitPopupButton extends StatelessWidget {
-  const ExitPopupButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: WillPopScope(
-        onWillPop: () async {
-          return await showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Exit Confirmation'),
-                content: Text('Are you sure you want to exit?'),
-                actions: [
-                  TextButton(
-                    child: Text('No'),
-                    onPressed: () {
-                      Navigator.of(context).pop(false);
-                    },
-                  ),
-                  TextButton(
-                    child: Text('Yes'),
-                    onPressed: () {
-                      Navigator.of(context).pop(true);
-                      // Perform exit logic here
-                      // For example: SystemNavigator.pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        child: ElevatedButton(
-          child: Text('Exit'),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Exit Confirmation'),
-                  content: Text('Are you sure you want to exit?'),
-                  actions: [
-                    TextButton(
-                      child: Text('No'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    TextButton(
-                      child: Text('Yes'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // Perform exit logic here
-                        // For example: SystemNavigator.pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
 class MainFile extends StatelessWidget {
-  const MainFile({super.key});
+  MainFile({super.key});
 
   @override
   Widget build(BuildContext context) {

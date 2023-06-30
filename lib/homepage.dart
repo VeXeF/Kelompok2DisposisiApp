@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:DisApp/datapegawai.dart';
+import 'package:DisApp/disposisi.dart';
 import 'package:DisApp/suratmasuk.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +86,17 @@ class _HomePageState extends State<HomePage> {
                             ),                          
                             Text(
                               'Data Pegawai', 
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),
+                            Align(
+                              alignment: Alignment.center),
+                            Padding(
+                              padding: EdgeInsets.all(16.0)),
+                            IconButton(
+                              icon: Icon(CupertinoIcons.envelope, size: 70,),
+                              onPressed:() => Navigator.push(context, MaterialPageRoute(builder: (context) => Disposisi())) 
+                            ),                          
+                            Text(
+                              'Disposisi', 
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),
                           ],
                         ),

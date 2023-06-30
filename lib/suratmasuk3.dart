@@ -1,18 +1,72 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
+import 'dart:convert';
+
 import 'package:DisApp/homepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http ;
 
-class SuratMasuk extends StatefulWidget {
-  const SuratMasuk({super.key});
+class SuratMasuk3 extends StatefulWidget {
+  const SuratMasuk3({super.key});
 
   @override
-  State<SuratMasuk> createState() => _SuratMasukState();
+  State<SuratMasuk3> createState() => _SuratMasuk3State();
 }
 
-class _SuratMasukState extends State<SuratMasuk> {
+class _SuratMasuk3State extends State<SuratMasuk3> {
+
+XFile? image;
+List _images = [];
+final ImagePicker picker = ImagePicker();
+Future sendImage(ImageSource media) async {
+	var img = await picker.pickImage(source: media);
+	var uri = "http://192.168.1.14/uploadgambar.php";
+	var request = http.MultipartRequest('POST', Uri.parse(uri));
+	if(img != null){
+		var pic = await http.MultipartFile.fromPath("image", img.path);
+		request.files.add(pic);
+		await request.send().then((result){
+			http.Response.fromStream(result).then((response){
+				var message = jsonDecode(response.body);
+				final snackBar = SnackBar(content: Text(message['message']));
+				ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+				getImageServer();
+			});
+		}).catchError((e){
+
+	print(e);
+		});
+	}
+}
+
+Future getImageServer() async {
+	try{
+
+	final response = await http.get(Uri.parse('http://192.168.1.14/apisuratmasuk.php'));
+
+	if(response.statusCode == 200){
+		final data = jsonDecode(response.body);
+
+		setState(() {
+		_images = data;
+		});
+	}
+	}catch(e){
+
+	print(e);
+
+	}
+}
+
+@override
+void initState() {
+	super.initState();
+	getImageServer();
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,6 +189,7 @@ class _SuratMasukState extends State<SuratMasuk> {
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    sendImage(ImageSource.gallery);
                   },  
                   child: 
                     Text(
@@ -149,7 +204,7 @@ class _SuratMasukState extends State<SuratMasuk> {
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                      ),
+                        ),
                       ),
                 ),
                 Padding(
